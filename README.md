@@ -1,4 +1,4 @@
-# Personal Finance Visualizer
+# Artha
 
 A modern web application for tracking personal finances built with Next.js, React, TypeScript, shadcn/ui, Recharts, and MongoDB.
 

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Personal Finance Manager",
+  title: "Artha",
   description: "Track your income and expenses with detailed analytics",
 };
 
