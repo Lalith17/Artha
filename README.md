@@ -54,8 +54,48 @@ The application features a clean, modern interface with:
 
 ### Prerequisites
 
+**For Local Development:**
+
 - Node.js 18+
 - MongoDB (local or cloud)
+
+**For Docker Deployment:**
+
+- Docker Desktop
+- Docker Compose
+
+### Quick Start with Docker (Recommended) 🐳
+
+The easiest way to get started is using Docker:
+
+1. **Install Docker Desktop**
+
+   - Download from: https://www.docker.com/products/docker-desktop/
+   - See [DOCKER-INSTALL.md](./DOCKER-INSTALL.md) for detailed instructions
+
+2. **Deploy the application**
+
+   ```bash
+   # Clone the repository
+   git clone <repository-url>
+   cd finance_manager
+
+   # Run deployment script (Windows)
+   .\docker-deploy.ps1
+
+   # Or manually start production
+   docker-compose up --build -d
+   ```
+
+3. **Access the application**
+   - App: http://localhost:3000
+   - Database Admin: http://localhost:8081 (admin/password)
+
+📖 **Full Docker Guide**: See [DOCKER.md](./DOCKER.md) for complete deployment instructions
+
+### Local Development Setup
+
+If you prefer local development without Docker:
 
 ### Installation
 

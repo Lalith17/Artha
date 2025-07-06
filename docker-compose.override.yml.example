@@ -1,0 +1,44 @@
+# Docker Compose Override Example
+# Copy this file to docker-compose.override.yml to customize your deployment
+
+version: '3.8'
+
+services:
+  finance-app:
+    # Custom environment variables
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017
+      - MONGODB_DB=finance_manager_custom
+    # Custom port mapping
+    ports:
+      - "3001:3000"  # Change to use port 3001 instead
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mongo:
+    # Custom MongoDB configuration
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=secure_password_here
+    # Custom port mapping
+    ports:
+      - "27018:27017"  # Change to use port 27018 instead
+
+  mongo-express:
+    # Custom credentials
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=secure_password_here
+      - ME_CONFIG_BASICAUTH_USERNAME=webadmin
+      - ME_CONFIG_BASICAUTH_PASSWORD=secure_web_password
+    # Custom port mapping
+    ports:
+      - "8082:8081"  # Change to use port 8082 instead
