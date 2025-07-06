@@ -462,8 +462,8 @@ export default function BudgetManager() {
               Create Budget
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md w-[95vw] max-w-[425px] max-h-[90vh] my-4 flex flex-col">
-            <DialogHeader className="flex-shrink-0">
+          <DialogContent>
+            <DialogHeader>
               <DialogTitle>
                 {editingBudget ? "Edit Budget" : "Create New Budget"}
               </DialogTitle>

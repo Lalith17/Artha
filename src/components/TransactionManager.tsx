@@ -360,7 +360,7 @@ export default function TransactionManager() {
               Add Transaction
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md w-[95vw] max-w-[425px] max-h-[90vh] my-4 flex flex-col">
+          <DialogContent>
             <DialogHeader className="flex-shrink-0">
               <DialogTitle>
                 {editingTransaction
