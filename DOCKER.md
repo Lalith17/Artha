@@ -1,72 +1,61 @@
 # 🐳 Docker Deployment Guide
 
-This guide explains how to deploy the Personal Finance Visualizer using Docker.
+Production-ready Docker deployment for the Personal Finance Visualizer.
 
 ## Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
-- [Docker Compose](https://docs.docker.com/compose/) (included with Docker Desktop)
+- Linux/macOS terminal or Git Bash on Windows (for bash script)
 
 ## Quick Start
 
-### Option 1: Using PowerShell Script (Windows)
-
-```powershell
-./docker-deploy.ps1
-```
-
-### Option 2: Using Bash Script (Linux/Mac)
+### Using the deployment script (recommended):
 
 ```bash
-chmod +x docker-deploy.sh
+# Start the application
 ./docker-deploy.sh
+
+# Stop the application
+./docker-deploy.sh stop
+
+# View logs
+./docker-deploy.sh logs
 ```
 
-### Option 3: Manual Commands
-
-#### Production Deployment
+### Manual commands:
 
 ```bash
-# Build and start production containers
+# Start all services
 docker-compose up --build -d
 
-# Access the application
-# App: http://localhost:3000
-# MongoDB Express: http://localhost:8081 (admin/password)
-```
+# Stop all services
+docker-compose down
 
-#### Development Deployment
-
-```bash
-# Build and start development containers with hot reload
-docker-compose -f docker-compose.dev.yml up --build -d
-
-# Access the application
-# App: http://localhost:3000 (with hot reload)
-# MongoDB Express: http://localhost:8081 (admin/password)
+# View logs
+docker-compose logs -f
 ```
 
 ## Services
 
-The Docker setup includes:
+The Docker setup includes three services:
 
 ### 1. **finance-app** - Next.js Application
 
 - **Port**: 3000
 - **Environment**: Production optimized
-- **Features**: Standalone build for minimal image size
+- **Features**: Multi-stage build, standalone output, minimal image size
 
 ### 2. **mongo** - MongoDB Database
 
 - **Port**: 27017
 - **Version**: MongoDB 7.0
-- **Data**: Persisted in Docker volume
+- **Data**: Persisted in Docker volume `mongodb_data`
 
 ### 3. **mongo-express** - Database Management UI
 
 - **Port**: 8081
 - **Credentials**: admin/password
-- **Purpose**: Visual database management
+- **Purpose**: Visual database management interface
 
 ## Environment Variables
 
@@ -80,30 +69,25 @@ MONGODB_DB=finance_manager
 
 ## Docker Files
 
-### `Dockerfile` (Production)
+### `Dockerfile`
 
-- Multi-stage build for optimization
-- Standalone Next.js output
+- Multi-stage build for production optimization
+- Standalone Next.js output for minimal runtime
 - Non-root user for security
-- Minimal Alpine Linux base
+- Alpine Linux base image
 
-### `Dockerfile.dev` (Development)
+### `docker-compose.yml`
 
-- Hot reload support
-- Volume mounting for live changes
-- Development dependencies included
+- Production-ready service configuration
+- MongoDB with persistent volume
+- Network isolation between services
+- Automatic restart policies
 
-### `docker-compose.yml` (Production)
+### `docker-deploy.sh`
 
-- Production-ready configuration
-- Persistent MongoDB volume
-- Network isolation
-
-### `docker-compose.dev.yml` (Development)
-
-- Development configuration
-- Volume mounting for hot reload
-- Same database setup
+- Simple bash script for easy deployment
+- Supports start, stop, and logs commands
+- Includes error handling and status checks
 
 ## Useful Commands
 
@@ -111,9 +95,7 @@ MONGODB_DB=finance_manager
 
 ```bash
 npm run docker:build    # Build production image
-npm run docker:run      # Run single container
 npm run docker:prod     # Start production stack
-npm run docker:dev      # Start development stack
 npm run docker:stop     # Stop all containers
 npm run docker:logs     # View application logs
 ```
@@ -124,7 +106,7 @@ npm run docker:logs     # View application logs
 # View running containers
 docker ps
 
-# View logs
+# View specific service logs
 docker-compose logs -f finance-app
 
 # Stop all containers
@@ -150,9 +132,9 @@ After deployment, access these URLs:
 
 MongoDB data is persisted using Docker volumes:
 
-- Volume name: `mongodb_data`
-- Location: Managed by Docker
-- Backup: Use `mongodump` or MongoDB Express export
+- **Volume name**: `mongodb_data`
+- **Location**: Managed by Docker
+- **Backup**: Use `mongodump` or MongoDB Express export
 
 ## Troubleshooting
 
@@ -162,7 +144,9 @@ MongoDB data is persisted using Docker volumes:
 # Stop containers using the ports
 docker-compose down
 
-# Or change ports in docker-compose.yml
+# Check what's using the port
+lsof -i :3000  # Linux/macOS
+netstat -ano | findstr :3000  # Windows
 ```
 
 ### Database Connection Issues
@@ -174,7 +158,7 @@ docker ps
 # Check MongoDB logs
 docker-compose logs mongo
 
-# Restart MongoDB
+# Restart MongoDB service
 docker-compose restart mongo
 ```
 
@@ -186,6 +170,9 @@ docker-compose logs finance-app
 
 # Rebuild containers
 docker-compose up --build
+
+# Check container status
+docker-compose ps
 ```
 
 ### Out of Disk Space
@@ -200,14 +187,15 @@ docker volume prune
 
 For production deployment on a server:
 
-1. **Update environment variables** in `docker-compose.yml`
-2. **Use proper secrets** for MongoDB
-3. **Set up reverse proxy** (nginx/traefik)
-4. **Configure SSL/TLS** certificates
-5. **Set up monitoring** and logging
-6. **Regular backups** of MongoDB data
+1. **Clone the repository** on your server
+2. **Update environment variables** in `docker-compose.yml`
+3. **Use proper secrets** for MongoDB authentication
+4. **Set up reverse proxy** (nginx/traefik) for SSL/TLS
+5. **Configure firewall** to restrict port access
+6. **Set up monitoring** and logging
+7. **Regular backups** of MongoDB data
 
-### Example Production docker-compose.yml updates:
+### Example Production Enhancements:
 
 ```yaml
 services:
@@ -227,40 +215,30 @@ services:
     restart: unless-stopped
 ```
 
-## Development Workflow
-
-1. **Start development stack**:
-
-   ```bash
-   docker-compose -f docker-compose.dev.yml up -d
-   ```
-
-2. **Make changes** to your code (hot reload enabled)
-
-3. **View logs** to debug:
-
-   ```bash
-   docker-compose -f docker-compose.dev.yml logs -f finance-app-dev
-   ```
-
-4. **Stop when done**:
-   ```bash
-   docker-compose -f docker-compose.dev.yml down
-   ```
-
 ## Security Notes
 
-- Change default MongoDB Express credentials
+- Change default MongoDB Express credentials in production
 - Use environment files for sensitive data
 - Run containers as non-root user (already configured)
 - Regular security updates for base images
 - Network isolation between services
+- Consider removing mongo-express in production
 
 ## Support
 
 If you encounter issues:
 
-1. Check the logs: `docker-compose logs`
-2. Verify Docker is running: `docker info`
-3. Ensure ports are available: `netstat -an | grep 3000`
-4. Try rebuilding: `docker-compose up --build`
+1. **Check the logs**: `docker-compose logs`
+2. **Verify Docker is running**: `docker info`
+3. **Ensure ports are available**: `lsof -i :3000` or `netstat -an | grep 3000`
+4. **Try rebuilding**: `docker-compose up --build`
+5. **Check container status**: `docker-compose ps`
+
+## Deployment Script Details
+
+The `docker-deploy.sh` script provides these functions:
+
+- **Default/start**: Builds and starts all services
+- **stop**: Stops all services
+- **logs**: Shows real-time logs from all services
+- **Error handling**: Checks for Docker availability and provides helpful messages

@@ -68,10 +68,9 @@ The application features a clean, modern interface with:
 
 The easiest way to get started is using Docker:
 
-1. **Install Docker Desktop**
+1. **Install Docker**
 
    - Download from: https://www.docker.com/products/docker-desktop/
-   - See [DOCKER-INSTALL.md](./DOCKER-INSTALL.md) for detailed instructions
 
 2. **Deploy the application**
 
@@ -80,18 +79,24 @@ The easiest way to get started is using Docker:
    git clone <repository-url>
    cd finance_manager
 
-   # Run deployment script (Windows)
-   .\docker-deploy.ps1
+   # Simple deployment
+   ./docker-deploy.sh
 
-   # Or manually start production
+   # Or manually
    docker-compose up --build -d
    ```
 
 3. **Access the application**
+
    - App: http://localhost:3000
    - Database Admin: http://localhost:8081 (admin/password)
 
-📖 **Full Docker Guide**: See [DOCKER.md](./DOCKER.md) for complete deployment instructions
+4. **Stop the application**
+   ```bash
+   ./docker-deploy.sh stop
+   # Or manually
+   docker-compose down
+   ```
 
 ### Local Development Setup
 
@@ -225,29 +230,3 @@ src/
 ## License
 
 This project is licensed under the MIT License.
-
-## Deployment
-
-The application can be deployed to any platform that supports Next.js:
-
-- **Vercel** (recommended)
-- **Netlify**
-- **AWS**
-- **Digital Ocean**
-
-Make sure to:
-
-1. Set up your MongoDB database
-2. Configure environment variables
-3. Build and deploy the application
-
-## Future Enhancements
-
-- Category management
-- Budget tracking
-- Data export/import
-- Multi-currency support
-- Investment tracking
-- Bill reminders
-- Financial goals
-- Advanced analytics and insights
