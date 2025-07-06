@@ -64,40 +64,6 @@ The application features a clean, modern interface with:
 - Docker Desktop
 - Docker Compose
 
-### Quick Start with Docker (Recommended) 🐳
-
-The easiest way to get started is using Docker:
-
-1. **Install Docker**
-
-   - Download from: https://www.docker.com/products/docker-desktop/
-
-2. **Deploy the application**
-
-   ```bash
-   # Clone the repository
-   git clone <repository-url>
-   cd finance_manager
-
-   # Simple deployment
-   ./docker-deploy.sh
-
-   # Or manually
-   docker-compose up --build -d
-   ```
-
-3. **Access the application**
-
-   - App: http://localhost:3000
-   - Database Admin: http://localhost:8081 (admin/password)
-
-4. **Stop the application**
-   ```bash
-   ./docker-deploy.sh stop
-   # Or manually
-   docker-compose down
-   ```
-
 ### Local Development Setup
 
 If you prefer local development without Docker:
