@@ -8,7 +8,7 @@ import { formatCurrency, formatDate } from "@/lib/utils-finance";
 import {
   TrendingUp,
   TrendingDown,
-  DollarSign,
+  IndianRupee,
   CreditCard,
   PieChart,
   Clock,
@@ -125,7 +125,7 @@ export default function DashboardSummary({ className }: DashboardSummaryProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Net Balance</CardTitle>
-            <DollarSign
+            <IndianRupee
               className={`h-4 w-4 ${
                 netBalance >= 0 ? "text-green-600" : "text-red-600"
               }`}

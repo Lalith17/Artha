@@ -119,7 +119,7 @@ export default function MonthlyExpenseChart({
               />
               <YAxis
                 tick={{ fontSize: 12 }}
-                tickFormatter={(value) => `$${value.toLocaleString()}`}
+                tickFormatter={(value) => `₹${value.toLocaleString()}`}
               />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="amount" fill="#3b82f6" radius={[4, 4, 0, 0]} />

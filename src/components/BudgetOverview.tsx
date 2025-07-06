@@ -283,7 +283,7 @@ export default function BudgetOverview({ className }: BudgetOverviewProps) {
                     />
                     <YAxis
                       tick={{ fontSize: 12 }}
-                      tickFormatter={(value) => `$${value}`}
+                      tickFormatter={(value) => `₹${value}`}
                     />
                     <Tooltip
                       formatter={(value: number) => formatCurrency(value)}
